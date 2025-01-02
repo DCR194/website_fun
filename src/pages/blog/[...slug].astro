@@ -1,0 +1,53 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+import Header from '../../components/Header.astro';
+import BlogHeader from '../../components/blog/BlogHeader.astro';
+import BlogTags from '../../components/blog/BlogTags.astro';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog');
+  return posts.map(post => ({
+    params: { slug: post.slug },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await post.render();
+---
+
+<Layout title={post.data.title}>
+  <Header />
+  
+  <main class="max-w-3xl mx-auto px-4 py-12">
+    <article class="prose lg:prose-xl">
+      <BlogHeader 
+        title={post.data.title}
+        author={post.data.author}
+        pubDate={post.data.pubDate}
+        image={post.data.image}
+      />
+      <BlogTags tags={post.data.tags} />
+      <Content />
+    </article>
+  </main>
+</Layout>
+
+<style is:global>
+  .prose {
+    max-width: 100%;
+  }
+  .prose img {
+    border-radius: 0.5rem;
+  }
+  .prose pre {
+    background-color: #1a1a1a;
+    padding: 1.5rem;
+    border-radius: 0.5rem;
+    overflow-x: auto;
+  }
+  .prose code {
+    color: #c9d1d9;
+  }
+</style>

@@ -1,0 +1,79 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import BlogCard from '../components/BlogCard.astro';
+import GalleryItem from '../components/GalleryItem.astro';
+
+import { getCollection } from 'astro:content';
+
+const posts = await getCollection('blog');
+const sortedPosts = posts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+
+
+const featuredImages = [
+  {
+    title: "Sunset at the Beach",
+    imageSrc: "https://images.unsplash.com/photo-1616036740257-9449ea1f6605",
+    description: "A beautiful sunset captured at the local beach"
+  },
+  // Add more images here
+];
+---
+
+<Layout title="Diego's little secret fun fun stuff">
+  <Header />
+
+  <main class="max-w-6xl mx-auto px-4 py-12">
+    <section class="mb-16">
+      <h1 class="text-4xl font-bold mb-8 text-center">
+        <span class="text-gradient">Secret page oOOoOoOoO</span>
+      </h1>
+      <p class="text-xl text-center text-gray-600 max-w-2xl mx-auto">
+        Congrats! You found this little secret section of my website. <br/>
+
+        NOW I HAVE TO KILL YOU
+      </p>
+    </section>
+
+    <section class="mb-16">
+      <h2 class="text-2xl font-bold mb-6">Recent Blog Posts</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {sortedPosts.slice(0, 4).map(post => (
+          <BlogCard
+            title={post.data.title}
+            description={post.data.description}
+            date={post.data.pubDate.toLocaleDateString()}
+            slug={post.slug}
+          />
+        ))}
+      </div>
+      <div class="text-center mt-8">
+        <a href="/blog" class="inline-block bg-purple-600 text-white px-6 py-2 rounded-lg hover:bg-purple-700 transition-colors">
+          View All Posts
+        </a>
+      </div>
+    </section>
+
+    <!-- <section>
+      <h2 class="text-2xl font-bold mb-6">Featured Images</h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {featuredImages.map(image => <GalleryItem {...image} />)}
+      </div>
+      <div class="text-center mt-8">
+        <a href="/gallery" class="inline-block bg-purple-600 text-white px-6 py-2 rounded-lg hover:bg-purple-700 transition-colors">
+          View Gallery
+        </a>
+      </div>
+    </section> -->
+  </main>
+</Layout>
+
+<style>
+  .text-gradient {
+    background-image: var(--accent-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-size: 400%;
+    background-position: 0%;
+  }
+</style>

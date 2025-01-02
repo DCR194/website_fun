@@ -1,0 +1,46 @@
+---
+import Layout from './Layout.astro';
+import Header from '../components/Header.astro';
+import BlogHeader from '../components/blog/BlogHeader.astro';
+import BlogTags from '../components/blog/BlogTags.astro';
+
+interface Props {
+  title: string;
+  author: string;
+  pubDate: Date;
+  tags: string[];
+  image?: string;
+}
+
+const { title, author, pubDate, tags, image } = Astro.props;
+---
+
+<Layout title={title}>
+  <Header />
+  
+  <main class="max-w-3xl mx-auto px-4 py-12">
+    <article class="prose lg:prose-xl">
+      <BlogHeader {title} {author} {pubDate} {image} />
+      <BlogTags {tags} />
+      <slot />
+    </article>
+  </main>
+</Layout>
+
+<style is:global>
+  .prose {
+    max-width: 100%;
+  }
+  .prose img {
+    border-radius: 0.5rem;
+  }
+  .prose pre {
+    background-color: #1a1a1a;
+    padding: 1.5rem;
+    border-radius: 0.5rem;
+    overflow-x: auto;
+  }
+  .prose code {
+    color: #c9d1d9;
+  }
+</style>

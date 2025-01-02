@@ -1,0 +1,15 @@
+---
+interface Props {
+  tags: string[];
+}
+
+const { tags } = Astro.props;
+---
+
+<div class="mb-6">
+  {tags.map((tag) => (
+    <span class="inline-block bg-purple-100 text-purple-800 rounded-full px-3 py-1 text-sm mr-2 mb-2">
+      {tag}
+    </span>
+  ))}
+</div>
